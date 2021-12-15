@@ -1,6 +1,17 @@
+const mysql = require("mysql");
 const inquirer = require("inquirer");
-const connection = require("./db/connection")
-const cTable = require('console.table');
+const consoleTable = require('console.table');
+
+const connection = mysql.createConnection({
+    host: "localhost",
+    user: "root",
+    password: "",
+    database: "company"
+});
+
+connection.connect(function (err) {
+    if (err) throw err;
+});
 
 startPrompt();
 
