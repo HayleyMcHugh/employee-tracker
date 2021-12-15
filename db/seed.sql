@@ -30,3 +30,7 @@ INSERT INTO department
     ('Finance'),
     ('Legal'),
     ('Sales');
+
+SELECT * FROM employee;
+SELECT * FROM role;
+SELECT * FROM department;
