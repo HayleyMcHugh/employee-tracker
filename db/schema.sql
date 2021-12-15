@@ -1,7 +1,7 @@
-DROP DATABASE IF EXISTS company;
-CREATE DATABASE company;
+DROP DATABASE IF EXISTS company_db;
+CREATE DATABASE company_db;
 
-USE company;
+USE company_db;
 
 CREATE TABLE employee {
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
