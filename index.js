@@ -1,12 +1,12 @@
 const mysql = require("mysql2");
 const inquirer = require("inquirer");
-const consoleTable = require('console.table');
+require("console.table");
 
 const connection = mysql.createConnection({
     host: "localhost",
     user: "root",
     password: "",
-    database: "company"
+    database: "company_db"
 });
 
 connection.connect(function (err) {
@@ -65,13 +65,44 @@ function startPrompt() {
 }
 
 function viewAllEmployees() {
-    connection.query("SELECT employee.first_name, employee.last_name, role.title, role.salary, department.name, CONCAT(e.first_name, ' ' , e.last_name) AS Manager FROM employee INNER JOIN role on role.id = employee.role_id INNER JOIN department on department.id = role.department_id LEFT JOIN employee on employee.manager_id = e.id;",
-    function(err, res) {
-        if(err) throw err
-        console.table(res)
-        startPrompt()
-    })
-}
+    connection.query(
+      `SELECT 
+    e.id, 
+    e.first_name, 
+    e.last_name,
+   
+    r.title,
+    r.salary,
+    d.department_name,
+    
+    CONCAT(e2.first_name, " " ,e2.last_name) AS "manager name"
+                           
+    FROM employee AS e
+  
+    LEFT JOIN role AS r
+    ON e.role_id = r.id
+  
+    LEFT JOIN department AS d
+    ON r.department_id = d.id
+  
+    LEFT JOIN employee AS e2 
+    ON e.manager_id = e2.id`,
+      function (err, res) {
+        if (err) throw err;
+        console.table(res);
+        startPrompt();
+      }
+    );
+  }
+  
+// function viewAllEmployees() {
+//     connection.query("SELECT employee.first_name, employee.last_name, role.title, role.salary, department.name, CONCAT(e.first_name, ' ' , e.last_name) AS Manager FROM employee INNER JOIN role on role.id = employee.role_id INNER JOIN department on department.id = role.department_id LEFT JOIN employee on employee.manager_id = e.id;",
+//     function(err, res) {
+//         if(err) throw err
+//         console.table(res)
+//         startPrompt()
+//     })
+// }
 
 function viewAllRoles() {
     connection.query("SELECT employee.first_name, employee.last_name, role.title AS title FROM employee JOIN role ON employee.role_id = role.id;",
