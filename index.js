@@ -13,8 +13,6 @@ connection.connect(function (err) {
     if (err) throw err;
 });
 
-startPrompt();
-
 function startPrompt() {
   inquirer.prompt([
     {
@@ -32,7 +30,7 @@ function startPrompt() {
                 ]
     }
   ]).then(function(val) {
-      switch (val.choice) {
+      switch (val.firstchoice) {
         case "View All Employees?":
             viewAllEmployees();
         break;
@@ -64,48 +62,50 @@ function startPrompt() {
   })
 }
 
-function viewAllEmployees() {
-    connection.query(
-      `SELECT 
-    e.id, 
-    e.first_name, 
-    e.last_name,
-   
-    r.title,
-    r.salary,
-    d.department_name,
-    
-    CONCAT(e2.first_name, " " ,e2.last_name) AS "manager name"
-                           
-    FROM employee AS e
-  
-    LEFT JOIN role AS r
-    ON e.role_id = r.id
-  
-    LEFT JOIN department AS d
-    ON r.department_id = d.id
-  
-    LEFT JOIN employee AS e2 
-    ON e.manager_id = e2.id`,
-      function (err, res) {
-        if (err) throw err;
-        console.table(res);
-        startPrompt();
-      }
-    );
-  }
-  
+startPrompt();
+
 // function viewAllEmployees() {
-//     connection.query("SELECT employee.first_name, employee.last_name, role.title, role.salary, department.name, CONCAT(e.first_name, ' ' , e.last_name) AS Manager FROM employee INNER JOIN role on role.id = employee.role_id INNER JOIN department on department.id = role.department_id LEFT JOIN employee on employee.manager_id = e.id;",
-//     function(err, res) {
-//         if(err) throw err
-//         console.table(res)
-//         startPrompt()
-//     })
-// }
+//     connection.query(
+//       `SELECT 
+//     e.id, 
+//     e.first_name, 
+//     e.last_name,
+   
+//     r.title,
+//     r.salary,
+//     d.name,
+    
+//     CONCAT(e2.first_name, " " ,e2.last_name) AS "manager name"
+                           
+//     FROM employee AS e
+  
+//     LEFT JOIN role AS r
+//     ON e.role_id = r.id
+  
+//     LEFT JOIN department AS d
+//     ON r.department_id = d.id
+  
+//     LEFT JOIN employee AS e2 
+//     ON e.manager_id = e2.id`,
+//       function (err, res) {
+//         if (err) throw err;
+//         console.table(res);
+//         startPrompt();
+//       }
+//     );
+//   }
+  
+function viewAllEmployees() {
+    connection.query("SELECT employee.id, employee.first_name, employee.last_name, role.title, department.name AS department, role.salary, CONCAT(manager.first_name, ' ', manager.last_name) AS manager FROM employee LEFT JOIN role on employee.role_id = role.id LEFT JOIN department on role.department_id = department.id LEFT JOIN employee manager on manager.id = employee.manager_id;",
+    function(err, res) {
+        if(err) throw err
+        console.table(res)
+        startPrompt()
+    })
+}
 
 function viewAllRoles() {
-    connection.query("SELECT employee.first_name, employee.last_name, role.title AS title FROM employee JOIN role ON employee.role_id = role.id;",
+    connection.query("SELECT role.id, role.title, department.name AS department, role.salary FROM role LEFT JOIN department on role.department_id = department.id;",
     function(err, res) {
         if(err) throw err
         console.table(res)
@@ -114,7 +114,7 @@ function viewAllRoles() {
 }
 
 function viewAllDepartments() {
-    connection.query("SELECT employee.first_name, employee.last_name, department.name AS department FROM employee JOIN role ON employee.role_id = role.id JOIN department on role.department_id = department.id  ORDER BY employee.id;",
+    connection.query("SELECT department.id, department.name FROM department;",
     function(err, res) {
         if(err) throw err
         console.table(res)
@@ -158,20 +158,20 @@ function addNewEmployee() {
         },
         {
             type: "list",
-            name: "employeerole",
+            name: "role",
             message: "What is the employees role?",
             choices: selectRole()
         },
         {
             type: "list",
-            name: "employeesmanager",
+            name: "manager",
             message: "What is the employees managers name?",
             choices: selectManager()
         }
     ]).then(function (val) {
-        var roleID = selectRole().indexOf(val.employeerole) + 1
-        var managerID = selectManager().indexOf(val.employeesmanager) + 1
-        connection.query("INSERT INTO employee SET ?"),
+        var roleID = selectRole().indexOf(val.role) + 1
+        var managerID = selectManager().indexOf(val.manager) + 1
+        connection.query("INSERT INTO employee SET ?",
         {
             first_name: val.firstname,
             last_name: val.lastname,
@@ -182,7 +182,7 @@ function addNewEmployee() {
             if(err) throw err
             console.table(val)
             startPrompt()
-        }
+        })
     })
 }
 
@@ -259,14 +259,14 @@ function addNewDepartment() {
     inquirer.prompt([
         {
             type: "input",
-            name: "departmentname",
+            name: "department",
             message: "What Department would you like to add?"
         }
     ]).then(function(res) {
         var query = connection.query(
             "INSERT INTO department SET ?",
             {
-                name: res.departmentname
+                name: res.department
             },
             function(err) {
                 if(err) throw err
