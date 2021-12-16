@@ -63,37 +63,6 @@ function startPrompt() {
 }
 
 startPrompt();
-
-// function viewAllEmployees() {
-//     connection.query(
-//       `SELECT 
-//     e.id, 
-//     e.first_name, 
-//     e.last_name,
-   
-//     r.title,
-//     r.salary,
-//     d.name,
-    
-//     CONCAT(e2.first_name, " " ,e2.last_name) AS "manager name"
-                           
-//     FROM employee AS e
-  
-//     LEFT JOIN role AS r
-//     ON e.role_id = r.id
-  
-//     LEFT JOIN department AS d
-//     ON r.department_id = d.id
-  
-//     LEFT JOIN employee AS e2 
-//     ON e.manager_id = e2.id`,
-//       function (err, res) {
-//         if (err) throw err;
-//         console.table(res);
-//         startPrompt();
-//       }
-//     );
-//   }
   
 function viewAllEmployees() {
     connection.query("SELECT employee.id, employee.first_name, employee.last_name, role.title, department.name AS department, role.salary, CONCAT(manager.first_name, ' ', manager.last_name) AS manager FROM employee LEFT JOIN role on employee.role_id = role.id LEFT JOIN department on role.department_id = department.id LEFT JOIN employee manager on manager.id = employee.manager_id;",
