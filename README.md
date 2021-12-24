@@ -31,7 +31,7 @@ The application gives yout the following options:
     * [console.table](https://www.npmjs.com/package/console.table) - Used to print MySQL into tables to the console.
     * [mysql](https://www.npmjs.com/package/mysql) - Used to connect to the MySQL database and perform queries.
 
-<a href="https://watch.screencastify.com/v/2xyvvrphdFGLTAb4ayzT">Link to Screencastify with video demo.</a>
+<a href="https://watch.screencastify.com/v/dGFUvGbVuznJQ7j6BKYV">Link to Screencastify with video demo.</a>
 
 ## Credits
 n/a
