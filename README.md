@@ -2,7 +2,7 @@
 
 This Node application is for a user to be able to view and manage departments, roles, and employees in their company in order to organize and plan their business.
 
-The application gives yout the following options:
+The application gives you the following options:
 * View all employees 
 * View all employees by role 
 * View all employees by department
@@ -13,7 +13,7 @@ The application gives yout the following options:
 ---
 1. Run `npm install` to install all dependencies
 2. Run `schema.sql` in MySQLWorkbench or terminal
-3. Run `seeds.sql` in MySQLWorkbench or terminal 
+3. Run `seed.sql` in MySQLWorkbench or terminal 
 
 
 ## Usage
