@@ -23,7 +23,6 @@ function startPrompt() {
                 "View All Employees?",
                 "View All Employees by Roles?",
                 "View All Employees by Departments?",
-                "Update Current Employee?",
                 "Add Employee?",
                 "Add Role?",
                 "Add Department?",
@@ -41,10 +40,6 @@ function startPrompt() {
 
         case "View All Employees by Departments?":
             viewAllDepartments();
-        break;
-
-        case "Update Current Employee?":
-            updateCurrentEmployee();
         break;
 
         case "Add Employee?":
@@ -155,45 +150,6 @@ function addNewEmployee() {
     })
 }
 
-function updateCurrentEmployee() {
-    connection.query("SELECT employee.last_name, role.title FROM employee JOIN role ON employee.role_id = role.id;", function(err, res) {
-        if(err) throw err
-        inquirer.prompt([
-            {
-                type: "list",
-                name: "lastName",
-                choice: function(){
-                    var lastName =[];
-                    for (var i = 0; i < res.length; i++) {
-                        lastName.push(res[i].last_name);
-                    }
-                    return lastName;
-                },
-                message: "What is the employees last name?",
-            },
-            {
-                type: "list",
-                name: "role",
-                message: "What is the employees new title?",
-                choices: selectRole()
-            },
-        ]).then(function(val) {
-            var roleID = selectRole().indexOf(val.role) + 1
-            connection.query("UPDATE employee SET WHERE ?",
-            {
-                last_name: val.lastName
-            },
-            {
-                role_id: roleID
-            },
-            function(err){
-                if(err) throw err
-                console.table(val)
-                startPrompt()
-            })
-        });
-    });
-}
 
 function addNewRole() {
     connection.query("SELECT role.title AS Title, role.salary AS Salary FROM role", function (err, res) {
