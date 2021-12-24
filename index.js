@@ -35,7 +35,7 @@ function startPrompt() {
             viewAllEmployees();
         break;
 
-        case "View All Employee's by Roles?":
+        case "View All Employees by Roles?":
             viewAllRoles();
         break;
 
@@ -74,7 +74,7 @@ function viewAllEmployees() {
 }
 
 function viewAllRoles() {
-    connection.query("SELECT role.id, role.title, department.name AS department, role.salary FROM role LEFT JOIN department on role.department_id = department.id;",
+    connection.query("SELECT employee.id, employee.first_name, employee.last_name, role.title FROM employee LEFT JOIN role on employee.role_id = role.id LEFT JOIN department on role.department_id = department.id;",
     function(err, res) {
         if(err) throw err
         console.table(res)
@@ -83,7 +83,7 @@ function viewAllRoles() {
 }
 
 function viewAllDepartments() {
-    connection.query("SELECT department.id, department.name FROM department;",
+    connection.query("SELECT employee.id, employee.first_name, employee.last_name, department.name FROM employee LEFT JOIN role on employee.role_id = role.id LEFT JOIN department on role.department_id = department.id;",
     function(err, res) {
         if(err) throw err
         console.table(res)
