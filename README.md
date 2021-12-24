@@ -24,6 +24,10 @@ The application gives yout the following options:
 
 ## Tool & Resources
 ---
+
+<img src="./images/employees-table-screenshot.jpeg" alt="screencapture of employees table in mysql">
+
+
 * [Node.js](https://nodejs.org/en/) - JavaScript runtime environment
     ### Dependencies
     ---
